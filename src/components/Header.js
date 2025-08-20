@@ -11,17 +11,22 @@ const Header = () => {
   const [suggestion, setSuggestion] = useState([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      if (searchQuery.trim().length === 0) {
+        setSuggestion([]);
+        return;
+      }
       if (searchCache[searchQuery]) {
         setSuggestion(searchCache[searchQuery]);
       } else {
         getSearchSuggestions();
       }
-    }, 200);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -32,7 +37,6 @@ const Header = () => {
       const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
       const json = await data.json();
       setSuggestion(json[1]);
-
       dispatch(cacheResults({ [searchQuery]: json[1] }));
     } catch (error) {
       console.error("Error fetching search suggestions:", error);
@@ -42,49 +46,55 @@ const Header = () => {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 shadow-md bg-white sticky top-0 z-50">
-      {/* Left Section */}
-      <div className="flex items-center space-x-4">
+<div className="flex items-center justify-between px-4 py-2 shadow-md bg-white sticky top-0 z-50">
+  
+      <div className="flex items-center gap-3">
         <MdOutlineMenu
-          className="text-3xl cursor-pointer"
+          className="text-2xl cursor-pointer"
           onClick={() => dispatch(toggleMenu())}
         />
-        <img
-          src="https://tse4.mm.bing.net/th?id=OIP._IfEaUssjZQwZ1u92b1_GgHaEK&pid=Api&P=0&h=220"
-          alt="YouTube"
-          className="h-10"
-        />
+
+        <div className="flex items-center gap-1 cursor-pointer">
+          <span className="text-red-600 font-extrabold text-xl px-2 py-0.5 bg-red-100 rounded-lg">
+            ▶
+          </span>
+          <h1 className="text-xl font-bold">
+            <span className="text-red-600">Play</span>
+            <span className="text-black">Tube</span>
+          </h1>
+        </div>
       </div>
 
-      {/* Search Section */}
-      <div className="relative flex-1 mx-4">
-        <div className="flex items-center border rounded-full shadow-md">
+      {/* Search */}
+      <div className="relative flex-1 max-w-xl mx-4">
+        <div className="flex items-center border border-gray-300 rounded-full overflow-hidden">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestion(true)}
-            onBlur={() => setShowSuggestion(false)}
+            onBlur={() => setTimeout(() => setShowSuggestion(false), 200)}
             placeholder="Search"
-            className="flex-1 px-4 py-2 rounded-l-full outline-none text-sm"
+            className="flex-1 px-4 py-1 outline-none text-sm"
           />
-          <button className="p-2 bg-gray-200 rounded-r-full hover:bg-gray-300">
+          <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 border-l">
             <BiSearch className="text-xl" />
           </button>
         </div>
 
-        {/* Suggestions */}
+        {/* Suggestions Dropdown */}
         {showSuggestion && suggestion.length > 0 && (
-          <div className="absolute top-12 left-0 w-full bg-white shadow-lg rounded-lg z-10">
-            <ul>
+          <div className="absolute top-11 left-0 w-full bg-white border rounded-lg shadow-lg z-10">
+            <ul className="text-sm">
               {isLoading ? (
                 <li className="p-2 text-gray-400">Loading...</li>
               ) : (
                 suggestion.map((item, index) => (
                   <li
                     key={index}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
                   >
+                    <BiSearch className="text-gray-500" />
                     {item}
                   </li>
                 ))
@@ -94,12 +104,13 @@ const Header = () => {
         )}
       </div>
 
-      {/* User Profile */}
-      <img
-        src="https://tse2.mm.bing.net/th?id=OIP.fqSvfYQB0rQ-6EG_oqvonQHaHa&pid=Api&P=0&h=220"
-        alt="User"
-        className="h-10 rounded-full"
-      />
+      <div>
+        <img
+          src="https://tse2.mm.bing.net/th?id=OIP.fqSvfYQB0rQ-6EG_oqvonQHaHa&pid=Api"
+          alt="User"
+          className="h-8 w-8 rounded-full cursor-pointer"
+        />
+      </div>
     </div>
   );
 };

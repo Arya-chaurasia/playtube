@@ -1,122 +1,99 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  FaHome,
-  FaMusic,
-  FaTrophy,
-  FaGamepad,
-  FaFilm,
-  FaClock,
-} from "react-icons/fa";
+import React from 'react'
+import { FaCircleUser, FaClockRotateLeft } from 'react-icons/fa6'
+import { PiBroadcastFill } from 'react-icons/pi'
+import { MdLocalFireDepartment, MdMovieFilter, MdOndemandVideo, MdOutlineShoppingBag, MdQueueMusic } from 'react-icons/md'
+import SignInButton from './common/SignInButton'
+import SidebarMenuItem from './common/SidebarMenuItem'
+import { useSelector } from 'react-redux'
+import { HiMiniHome } from 'react-icons/hi2'
+import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
-  const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
+  const isMenuOpen = useSelector((store) => store.app.isMenuOpen)
 
-  if (!isMenuOpen) return null;
+  return isMenuOpen ? (
+    <div className="mt-2 w-60 h-full overflow-y-auto scrollbar-thin scrollbar-track-zinc-100 scrollbar-thumb-zinc-500">
+      <ul className="pb-4">
+        <li>
+          <Link to="/">
+            <SidebarMenuItem itemName="Home" CustomIconComponent={HiMiniHome} />
+          </Link>
+        </li>
+        <li>
+          <SidebarMenuItem itemName="Shorts" CustomIconComponent={MdMovieFilter} />
+        </li>
+        <li>
+          <SidebarMenuItem itemName="Subscriptions" CustomIconComponent={MdOndemandVideo} />
+        </li>
+      </ul>
 
-  return (
-    <div className="p-5 shadow-lg w-60 bg-gray-800 text-white min-h-screen">
-      <div className="mb-6">
-        <h1 className="text-lg font-bold text-gray-300 uppercase tracking-wider">
-          Navigation
-        </h1>
-        <ul className="mt-4 space-y-3">
+      <ul className="pb-4 pt-4 border-t-2">
+        <li>
+          <SidebarMenuItem itemName="You" CustomIconComponent={FaCircleUser} />
+        </li>
+        <li>
+          <SidebarMenuItem itemName="History" CustomIconComponent={FaClockRotateLeft} />
+        </li>
+      </ul>
+
+      {/* Always show Sign-in & Explore section (just UI, no user logic) */}
+      <>
+        <ul className="py-4 pl-3 border-t-2">
           <li>
-            <Link
-              to="/"
-              className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors"
-            >
-              <FaHome size={20} />
-              <span>Home</span>
-            </Link>
-          </li>
-          <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaFilm size={20} />
-              <span>Shorts</span>
+            <div className="pb-2 text-sm pl-4">
+              Sign in to like videos,
+              <br /> comment, and subscribe.
             </div>
           </li>
           <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaFilm size={20} />
-              <span>Videos</span>
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaClock size={20} />
-              <span>Live</span>
+            <div className="pl-4">
+              <SignInButton />
             </div>
           </li>
         </ul>
-      </div>
-
-      <div className="mb-6">
-        <h1 className="text-lg font-bold text-gray-300 uppercase tracking-wider">
-          Subscriptions
-        </h1>
-        <ul className="mt-4 space-y-3">
+        <h1 className="font-semibold pt-4 pl-6 border-t-2">Explore</h1>
+        <ul className="py-4">
           <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaMusic size={20} />
-              <span>Music</span>
-            </div>
+            <SidebarMenuItem itemName="Trending" CustomIconComponent={MdLocalFireDepartment} />
           </li>
           <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaTrophy size={20} />
-              <span>Sports</span>
-            </div>
+            <SidebarMenuItem itemName="Shopping" CustomIconComponent={MdOutlineShoppingBag} />
           </li>
           <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaGamepad size={20} />
-              <span>Gaming</span>
-            </div>
+            <SidebarMenuItem itemName="Music" CustomIconComponent={MdQueueMusic} />
           </li>
           <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaFilm size={20} />
-              <span>Movie</span>
-            </div>
+            <SidebarMenuItem itemName="Movies" CustomIconComponent={MdMovieFilter} />
+          </li>
+          <li>
+            <SidebarMenuItem itemName="Live" CustomIconComponent={PiBroadcastFill} />
           </li>
         </ul>
-      </div>
-
-      <div>
-        <h1 className="text-lg font-bold text-gray-300 uppercase tracking-wider">
-          Watch Later
-        </h1>
-        <ul className="mt-4 space-y-3">
-          <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaMusic size={20} />
-              <span>Music</span>
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaTrophy size={20} />
-              <span>Sports</span>
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaGamepad size={20} />
-              <span>Gaming</span>
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer">
-              <FaFilm size={20} />
-              <span>Movie</span>
-            </div>
-          </li>
-        </ul>
-      </div>
+      </>
     </div>
-  );
-};
+  ) : (
+    <div className="mt-2">
+      <ul className="pb-4">
+        <li>
+          <Link to="/">
+            <SidebarMenuItem itemName="Home" CustomIconComponent={HiMiniHome} isMenuOpen={isMenuOpen} />
+          </Link>
+        </li>
+        <li>
+          <SidebarMenuItem itemName="Shorts" CustomIconComponent={MdMovieFilter} isMenuOpen={isMenuOpen} />
+        </li>
+        <li>
+          <SidebarMenuItem itemName="Subscriptions" CustomIconComponent={MdOndemandVideo} isMenuOpen={isMenuOpen} />
+        </li>
+        <li>
+          <SidebarMenuItem itemName="You" CustomIconComponent={FaCircleUser} isMenuOpen={isMenuOpen} />
+        </li>
+        <li>
+          <SidebarMenuItem itemName="History" CustomIconComponent={FaClockRotateLeft} isMenuOpen={isMenuOpen} />
+        </li>
+      </ul>
+    </div>
+  )
+}
 
-export default Sidebar;
+export default Sidebar

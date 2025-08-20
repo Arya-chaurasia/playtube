@@ -4,13 +4,12 @@ import { Outlet } from "react-router-dom";
 
 const Body = () => {
   return (
-    <div className="flex flex-col lg:flex-row">
+<div className="flex h-[calc(100vh-64px)]"> 
       <Sidebar />
-      <div className="flex-grow">
+      <div className="flex-1 overflow-y-auto">
         <Outlet />
       </div>
-    </div>
-  );
+    </div>  );
 };
 
 export default Body;

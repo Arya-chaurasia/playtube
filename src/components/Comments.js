@@ -1,21 +1,20 @@
-import React from 'react'
+import { convertUtcToDaysAgo } from "../utils/helper"
 
-const commentsData = [
-    {
-        name:"Arya",
-        text: "Lorem ipsum"
-    }
-]
-
-const Comment = ({}) => {
-    return <div>Comment</div>
-}
-const Comments = () => {
+const Comment = ({ imageUrl, name, comment, updatedAt }) => {
   return (
-    <div className='m-5 p-2'>
-        <h1 className='text-2xl font-bold'>Comments</h1>
+    <div className="p-4 rounded-lg">
+        <div className="flex items-center">
+        <div>
+            <img className="w-12 rounded-full" src={imageUrl} alt="Profile" />
+        </div>
+        <div className="ml-4">
+            <span className="font-bold">{name}</span>
+            <span className="text-sm ml-2">{convertUtcToDaysAgo(updatedAt)}</span>
+            <div dangerouslySetInnerHTML={{ __html: (comment?.startsWith("@@") ? ("@" + comment.slice(2)) : comment) }}></div>
+        </div>
+        </div>
     </div>
   )
 }
 
-export default Comments
+export default Comment
